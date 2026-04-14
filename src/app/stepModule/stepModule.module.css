@@ -1,0 +1,413 @@
+/* ─── Page & Card ─────────────────────────────────────────────────────────── */
+.page {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--color-background-tertiary, #f5f5f4);
+}
+
+.card {
+    max-width: 600px;
+    width: 100%;
+    background: var(--color-background-primary, #ffffff);
+    border-radius: 16px;
+    border: 0.5px solid var(--color-border-tertiary, rgba(0, 0, 0, 0.12));
+    padding: 2rem;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.stepBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-background-info, #e6f1fb);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-info, #185fa5);
+    flex-shrink: 0;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* ─── Module count row ────────────────────────────────────────────────────── */
+.countRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--color-background-secondary, #f8f7f4);
+    border: 0.5px solid var(--color-border-tertiary, rgba(0, 0, 0, 0.12));
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+}
+
+.countLabel {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    flex: 1;
+}
+
+.counterBtn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 8px;
+    border: 0.5px solid var(--color-border-secondary, rgba(0, 0, 0, 0.2));
+    background: var(--color-background-primary, #ffffff);
+    color: var(--color-text-primary);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.counterBtn:hover:not(:disabled) {
+    background: var(--color-background-secondary, #f8f7f4);
+}
+
+.counterBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.countNum {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    min-width: 28px;
+    text-align: center;
+}
+
+.countMax {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+}
+
+/* ─── Module tabs ─────────────────────────────────────────────────────────── */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+}
+
+.tab {
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 99px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 0.5px solid var(--color-border-tertiary, rgba(0, 0, 0, 0.12));
+    font-family: inherit;
+}
+
+.tabDefault {
+    background: var(--color-background-secondary, #f8f7f4);
+    color: var(--color-text-secondary);
+}
+
+.tabDefault:hover {
+    border-color: var(--color-border-secondary, rgba(0, 0, 0, 0.2));
+}
+
+.tabActive {
+    background: var(--color-background-info, #e6f1fb);
+    border-color: var(--color-border-info, #b5d4f4);
+    color: var(--color-text-info, #185fa5);
+}
+
+.tabDone {
+    background: var(--color-background-success, #eaf3de);
+    border-color: var(--color-border-success, #c0dd97);
+    color: var(--color-text-success, #3b6d11);
+}
+
+/* ─── Editor ──────────────────────────────────────────────────────────────── */
+.editor {
+    background: var(--color-background-secondary, #f8f7f4);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.nameGrid {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+}
+
+.fieldLabel {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 5px;
+    letter-spacing: 0.02em;
+}
+
+/* ─── Inputs ──────────────────────────────────────────────────────────────── */
+.input {
+    width: 100%;
+    padding: 7px 10px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 0.5px solid var(--color-border-tertiary, rgba(0, 0, 0, 0.12));
+    border-radius: 8px;
+    background: var(--color-background-primary, #ffffff);
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.input:focus {
+    border-color: var(--color-border-info, #b5d4f4);
+}
+
+.input:disabled {
+    background: var(--color-background-secondary, #f8f7f4);
+    cursor: not-allowed;
+}
+
+/* ─── Breakdown table ─────────────────────────────────────────────────────── */
+.breakdownHeader {
+    display: grid;
+    grid-template-columns: 1fr 80px 20px;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.colLabel {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.colLabelRight {
+    text-align: right;
+}
+
+.componentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.componentRow {
+    display: grid;
+    grid-template-columns: 1fr 80px 20px;
+    gap: 8px;
+    align-items: center;
+    transition: opacity 0.2s ease;
+}
+
+.componentInput {
+    font-size: 13px;
+}
+
+.weightInputWrapper {
+    position: relative;
+}
+
+.weightInput {
+    font-size: 13px;
+    padding: 7px 22px 7px 8px;
+    text-align: right;
+}
+
+.percentSign {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+}
+
+.checkIndicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-background-success, #eaf3de);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.checkIcon {
+    width: 10px;
+    height: 10px;
+    stroke: var(--color-text-success, #3b6d11);
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.checkPlaceholder {
+    width: 18px;
+}
+
+/* ─── Progress ────────────────────────────────────────────────────────────── */
+.progressSection {
+    margin-top: 1rem;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.progressLabel {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+}
+
+.progressValue {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.textComplete {
+    color: var(--color-text-success, #3b6d11);
+}
+
+.textWarning {
+    color: var(--color-text-warning, #854f0b);
+}
+
+.textMuted {
+    color: var(--color-text-tertiary);
+}
+
+.progressTrack {
+    height: 4px;
+    background: var(--color-border-tertiary, rgba(0, 0, 0, 0.12));
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.progressFillNormal {
+    background: var(--color-text-info, #185fa5);
+}
+
+.progressFillHigh {
+    background: var(--color-text-warning, #854f0b);
+}
+
+.progressFillComplete {
+    background: var(--color-text-success, #3b6d11);
+}
+
+.warnMessage {
+    font-size: 12px;
+    color: var(--color-text-warning, #854f0b);
+    margin-top: 6px;
+}
+
+.hintMessage {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    margin-top: 6px;
+}
+
+/* ─── Pagination ──────────────────────────────────────────────────────────── */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.paginationBtn {
+    padding: 5px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 0.5px solid var(--color-border-secondary, rgba(0, 0, 0, 0.2));
+    background: var(--color-background-primary, #ffffff);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease;
+}
+
+.paginationBtn:hover:not(:disabled) {
+    background: var(--color-background-secondary, #f8f7f4);
+}
+
+.paginationBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+}
+
+/* ─── Submit ──────────────────────────────────────────────────────────────── */
+.actions {
+    display: flex;
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 10px 1.5rem;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 12px;
+    border: none;
+    background: var(--color-text-primary, #2c2c2a);
+    color: var(--color-background-primary, #ffffff);
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.submitBtnDisabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+}
