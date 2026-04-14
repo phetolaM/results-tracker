@@ -8,11 +8,13 @@ import styles from "./calculator.module.css";
 //   modules[]        — array of module objects from StepModules
 //   onEditModules()  — callback to go back to setup
 
-export default function Calculator({ modules, onEditModules }) {
-    const [mods, setMods] = useState(modules);
+export default function Calculator({ modules = [], onEditModules = () => {} } = {}) {
+    const [mods, setMods] = useState(
+        Array.isArray(modules) ? modules : [],
+    );
 
     useEffect(() => {
-        setMods(modules);
+        setMods(Array.isArray(modules) ? modules : []);
     }, [modules]);
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -193,6 +195,16 @@ export default function Calculator({ modules, onEditModules }) {
 
             {/* Module cards */}
             <div className={styles.moduleList}>
+                {mods.length === 0 && (
+                    <div className={styles.moduleCard}>
+                        <div className={styles.commentBox}>
+                            <p className={styles.commentLine}>
+                                No modules configured yet. Go back to setup and
+                                add at least one module to start calculating.
+                            </p>
+                        </div>
+                    </div>
+                )}
                 {mods.map((mod) => {
                     const yearMark = calcYearMark(mod);
                     const examResult = calcExamAim(yearMark, mod.target);
