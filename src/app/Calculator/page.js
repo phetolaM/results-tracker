@@ -14,8 +14,12 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
     );
 
     useEffect(() => {
-        setMods(Array.isArray(modules) ? modules : []);
-    }, [modules]);
+        if (!Array.isArray(mods) || mods.length === 0) return;
+        try {
+            localStorage.setItem("examCalc_v2_modules", JSON.stringify(mods));
+            localStorage.setItem("examCalc_v2_setup", "true");
+        } catch {}
+    }, [mods]);
 
     // ── Helpers ────────────────────────────────────────────────────────────────
 
