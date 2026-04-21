@@ -8,10 +8,11 @@ import styles from "./calculator.module.css";
 //   modules[]        — array of module objects from StepModules
 //   onEditModules()  — callback to go back to setup
 
-export default function Calculator({ modules = [], onEditModules = () => {} } = {}) {
-    const [mods, setMods] = useState(
-        Array.isArray(modules) ? modules : [],
-    );
+export default function Calculator({
+    modules = [],
+    onEditModules = () => {},
+} = {}) {
+    const [mods, setMods] = useState(Array.isArray(modules) ? modules : []);
 
     useEffect(() => {
         if (!Array.isArray(mods) || mods.length === 0) return;
@@ -87,16 +88,16 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
     };
 
     const getFinalBandLabel = (mark) => {
-        if (mark >= 75) return "distinction";
-        if (mark >= 50) return "pass";
-        if (mark >= 40) return "supplementary";
+        if (mark >= 75) return "Distinction";
+        if (mark >= 50) return "Pass";
+        if (mark >= 40) return "Supplementary";
         return "fail";
     };
 
     const getModuleComments = (mod, yearMark, examResult) => {
         if (yearMark === null) {
             return [
-                "Enter all assessment marks to calculate the year mark and exam aim.",
+                "Enter all assessment marks to calculate the DP and exam aim.",
             ];
         }
 
@@ -105,11 +106,11 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
 
         if (yearMark < 40) {
             comments.push(
-                `Year mark ${yearMark.toFixed(1)}% is below 40%, so this module does not qualify for the exam.`,
+                `DP ${yearMark.toFixed(1)}% is below 40%, so this module does not qualify for the exam.`,
             );
         } else {
             comments.push(
-                `Year mark ${yearMark.toFixed(1)}% qualifies you to write the exam.`,
+                `DP ${yearMark.toFixed(1)}% qualifies you to write the exam.`,
             );
         }
 
@@ -186,7 +187,8 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                 <div>
                     <h1 className={styles.mainTitle}>Exam Mark Tracker</h1>
                     <p className={styles.subtitle}>
-                        Enter your marks below — exam aim updates automatically.
+                        Enter your marks below. The exam aim updates
+                        automatically.
                     </p>
                 </div>
                 <button
@@ -278,7 +280,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                 </th>
                                             ))}
                                             {[
-                                                "Year Mark",
+                                                "DP",
                                                 "Final Target",
                                                 "Exam Aim",
                                             ].map((h) => (
@@ -483,8 +485,8 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                                     styles.inlineHintLine
                                                                 }
                                                             >
-                                                                A year mark of
-                                                                40% is no longer
+                                                                A DP of 40% is
+                                                                no longer
                                                                 achievable with
                                                                 remaining tasks.
                                                             </p>
@@ -497,8 +499,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                             >
                                                                 You&apos;ve
                                                                 already secured
-                                                                a qualifying
-                                                                year mark.
+                                                                a qualifying DP.
                                                             </p>
                                                         ) : (
                                                             <p
@@ -506,8 +507,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                                     styles.inlineHintLine
                                                                 }
                                                             >
-                                                                To reach a year
-                                                                mark of{" "}
+                                                                To reach a DP of{" "}
                                                                 <span
                                                                     className={
                                                                         styles.hintHighlightRed
@@ -531,7 +531,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                             </p>
                                                         )}
 
-                                                        {remainingHint.examAimAtTarget !==
+                                                        {/* {remainingHint.examAimAtTarget !==
                                                             null &&
                                                             remainingHint.neededForQualify <=
                                                                 100 && (
@@ -540,8 +540,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                                         styles.inlineHintLine
                                                                     }
                                                                 >
-                                                                    With year
-                                                                    mark{" "}
+                                                                    With DP{" "}
                                                                     {
                                                                         remainingHint.projectedYearMark
                                                                     }
@@ -563,7 +562,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                                                                     </span>
                                                                     .
                                                                 </p>
-                                                            )}
+                                                            )} */}
                                                     </div>
                                                 </td>
                                                 <td
@@ -605,7 +604,7 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
                             {/* Partial marks hint */}
                             {!allFilled && anyFilled && (
                                 <div className={styles.footnotePartial}>
-                                    ℹ Year mark will show once all{" "}
+                                    ℹ DP will show once all{" "}
                                     {mod.components.length} assessment marks are
                                     entered.
                                 </div>
@@ -617,9 +616,9 @@ export default function Calculator({ modules = [], onEditModules = () => {} } = 
 
             {/* Legend */}
             <div className={styles.legend}>
-                <span>Formula: Year Mark × 40% + Exam × 60% = Final Mark</span>
+                <span>Formula: DP × 40% + Exam × 60% = Final Mark</span>
                 <span>•</span>
-                <span>Year Mark must be ≥ 40% to qualify for exams</span>
+                <span>DP must be ≥ 40% to qualify for exams</span>
                 <span>•</span>
                 <span>Exam must be ≥ 50% to pass</span>
                 <span>•</span>

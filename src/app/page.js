@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StepModules from "./stepModule/page";
 import Calculator from "./Calculator/page";
 import styles from "./page.module.css";
@@ -10,24 +10,25 @@ import styles from "./page.module.css";
 // localStorage keys: examCalc_v2_setup, examCalc_v2_modules
 
 export default function ExamCalc() {
-    const [phase, setPhase] = useState(() => {
-        try {
-            return localStorage.getItem("examCalc_v2_setup") === "true"
-                ? "calculator"
-                : "modules";
-        } catch {
-            return "modules";
-        }
-    });
+    const [phase, setPhase] = useState("modules");
+    const [modules, setModules] = useState([]);
 
-    const [modules, setModules] = useState(() => {
+    useEffect(() => {
         try {
-            const s = localStorage.getItem("examCalc_v2_modules");
-            return s ? JSON.parse(s) : [];
+            const savedModules = localStorage.getItem("examCalc_v2_modules");
+            if (savedModules) {
+                setModules(JSON.parse(savedModules));
+            }
+
+            setPhase(
+                localStorage.getItem("examCalc_v2_setup") === "true"
+                    ? "calculator"
+                    : "modules",
+            );
         } catch {
-            return [];
+            setPhase("modules");
         }
-    });
+    }, []);
 
     const handleModules = (mods) => {
         setModules(mods);
