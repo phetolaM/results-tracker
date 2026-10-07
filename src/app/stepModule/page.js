@@ -1,9 +1,20 @@
+// page.js
 "use client";
 
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./stepModule.module.css";
 
-// ─── Internal: single component row ──────────────────────────────────────────
+// ─── Helper: Tooltip component ─────────────────────────────────────────
+function InfoTooltip({ text }) {
+    return (
+        <span className={styles.tooltipWrapper}>
+            <span className={styles.tooltipIcon}>?</span>
+            <span className={styles.tooltipText}>{text}</span>
+        </span>
+    );
+}
+
+// ─── ComponentRow ──────────────────────────────────────────────────────
 function ComponentRow({ index, comp, onChange, remaining, isDisabled }) {
     const [isPctFocused, setIsPctFocused] = useState(false);
 
@@ -56,7 +67,6 @@ function ComponentRow({ index, comp, onChange, remaining, isDisabled }) {
     );
 }
 
-// ─── Combined Setup: Module Count + Module Details ────────────────────────────
 const COMPONENT_ROW_COUNT = 5;
 
 function createBlankComponents() {
@@ -108,24 +118,52 @@ export default function StepModules({ initialModules = [], onNext }) {
 
     const initialModuleMap = new Map(initialModules.map((m) => [m.id, m]));
 
+    const nextId = useRef(
+        initialModules.length > 0
+            ? Math.max(...initialModules.map((m, i) => m.id ?? i)) + 1
+            : 5,
+    );
+
     const adjustModuleCount = (nextCount) => {
         const safeCount = Math.max(1, Math.min(12, nextCount));
-        setModuleCount(safeCount);
+        if (safeCount === mods.length) return;
 
-        setMods((prev) => {
-            if (safeCount === prev.length) return prev;
-            if (safeCount < prev.length) return prev.slice(0, safeCount);
-
-            const startId =
-                prev.length > 0 ? Math.max(...prev.map((m) => m.id)) + 1 : 0;
+        if (safeCount < mods.length) {
+            setMods((prev) => prev.slice(0, safeCount));
+        } else {
             const additions = Array.from(
-                { length: safeCount - prev.length },
-                (_, i) => blankModule(startId + i),
+                { length: safeCount - mods.length },
+                () => blankModule(nextId.current++),
             );
-            return [...prev, ...additions];
-        });
+            setMods((prev) => [...prev, ...additions]);
+        }
 
+        setModuleCount(safeCount);
         setActive((prevActive) => Math.min(prevActive, safeCount - 1));
+    };
+
+    const removeModule = (index) => {
+        if (mods.length <= 1) return;
+
+        const target = mods[index];
+        const hasData =
+            target.name.trim() ||
+            target.components.some((c) => c.name.trim() || c.pct > 0);
+        if (
+            hasData &&
+            !window.confirm(
+                `Remove "${target.name.trim() || `Module ${index + 1}`}"?`,
+            )
+        ) {
+            return;
+        }
+
+        setMods((prev) => prev.filter((_, i) => i !== index));
+        setModuleCount((prev) => prev - 1);
+        setActive((prevActive) => {
+            if (index < prevActive) return prevActive - 1; // removed one before active
+            return Math.min(prevActive, mods.length - 2); // removed active (or later) one
+        });
     };
 
     const updateMod = (i, field, val) =>
@@ -194,7 +232,13 @@ export default function StepModules({ initialModules = [], onNext }) {
                 target: prev?.target ?? m.target ?? 75,
             };
         });
-        onNext(finalModules);
+
+        if (onNext) {
+            onNext(finalModules);
+        } else {
+            console.log("Final modules:", finalModules);
+            alert("✅ Setup complete! Check console for output.");
+        }
     };
 
     const getTabClassName = (m, i) => {
@@ -218,13 +262,17 @@ export default function StepModules({ initialModules = [], onNext }) {
                     <h1 className={styles.title}>Setup modules</h1>
                 </div>
                 <p className={styles.subtitle}>
-                    Configure each module&apos;s name, semester, and year mark
-                    breakdown — each must total 100%.
+                    {
+                        "Configure each module's name, semester, and year mark breakdown, each must total 100%."
+                    }
                 </p>
 
                 {/* Module count */}
                 <div className={styles.countRow}>
-                    <span className={styles.countLabel}>Number of modules</span>
+                    <span className={styles.countLabel}>
+                        Number of modules
+                        <InfoTooltip text="Choose how many modules you want to set up. Each module needs a name, semester and a mark breakdown that totals 100%." />
+                    </span>
                     <button
                         onClick={() => adjustModuleCount(moduleCount - 1)}
                         className={styles.counterBtn}
@@ -297,11 +345,15 @@ export default function StepModules({ initialModules = [], onNext }) {
 
                     {/* Breakdown header */}
                     <div className={styles.breakdownHeader}>
-                        <span className={styles.colLabel}>Assessment name</span>
+                        <span className={styles.colLabel}>
+                            Assessment name
+                            <InfoTooltip text="Give each assessment a descriptive name (e.g. 'Test 1', 'Final exam')." />
+                        </span>
                         <span
                             className={`${styles.colLabel} ${styles.colLabelRight}`}
                         >
                             Weight
+                            <InfoTooltip text="Enter the percentage weight for this assessment. The sum of all weights must equal 100%." />
                         </span>
                         <span />
                     </div>
@@ -326,6 +378,7 @@ export default function StepModules({ initialModules = [], onNext }) {
                         <div className={styles.progressHeader}>
                             <span className={styles.progressLabel}>
                                 Total allocated
+                                <InfoTooltip text="The total percentage you have allocated so far. It must reach exactly 100% before you can continue." />
                             </span>
                             <span
                                 className={`${styles.progressValue} ${
@@ -338,7 +391,7 @@ export default function StepModules({ initialModules = [], onNext }) {
                             >
                                 {total}%
                                 {total === 100
-                                    ? " — complete"
+                                    ? " complete"
                                     : total > 0
                                       ? ` — ${remaining}% remaining`
                                       : ""}
@@ -360,6 +413,14 @@ export default function StepModules({ initialModules = [], onNext }) {
                                 Add at least one assessment to get started.
                             </p>
                         )}
+                        <button
+                            type="button"
+                            onClick={() => removeModule(active)}
+                            disabled={moduleCount <= 1}
+                            className={styles.removeBtn}
+                        >
+                            Remove this module
+                        </button>
                     </div>
                 </div>
 
@@ -391,7 +452,9 @@ export default function StepModules({ initialModules = [], onNext }) {
                     <button
                         onClick={handleSubmit}
                         disabled={!canSubmit}
-                        className={`${styles.submitBtn} ${!canSubmit ? styles.submitBtnDisabled : ""}`}
+                        className={`${styles.submitBtn} ${
+                            !canSubmit ? styles.submitBtnDisabled : ""
+                        }`}
                     >
                         {canSubmit
                             ? "Start calculator →"
